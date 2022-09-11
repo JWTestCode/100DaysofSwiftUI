@@ -1,0 +1,74 @@
+//My first attempt. Had fun, spent about 90 minutes on it? Should probably have focused more on what I was supposed to be implementing but hey!, it works. Wanted slightly more complex functionality but it works.
+import Cocoa
+import Foundation
+
+struct mitsubishiLancer{
+    static let Manufacturer = "Mitsubishi Moters"
+    static let Make = "Lancer"
+    private var Model = "Evolution Final Edition Gr.4"
+    private var Year = 2019
+    private var Doors = 4
+    private var Seats = 5
+    private let Gears = 5
+    private var reverse = false
+    private var currentGear = 0
+    
+    mutating func upShift(gears: Int) {
+        for i in 1...gears{
+        if reverse == false {
+        if currentGear < Gears {
+           currentGear += 1
+        }else{
+        print("Grind Gears")
+    }
+        }else if reverse == true && currentGear == 0 {
+            reverse = false
+            currentGear += 1
+        }else {
+            print("Explosion")
+        }
+    }
+    }
+    mutating func downShift(gears: Int) {
+        if currentGear > 0 {
+        for i in 1...gears{
+        if currentGear > 0 {
+           currentGear -= 1
+        }else if currentGear == 0 && reverse == false {
+        reverse = true
+    }
+}
+        }
+    }
+    func printGear() {
+        if currentGear != 0 {
+            if currentGear == 1{
+        print("You're in \(currentGear)st Gear")
+            }else if currentGear == 2{
+                print("You're in \(currentGear)nd Gear")
+            }else if currentGear == 3{
+            print("You're in \(currentGear)rd Gear")
+            }else if currentGear >= 4 {
+            print("You're in \(currentGear)th Gear")
+            }
+        }else if currentGear == 0 && reverse == true {
+            print("You're in reverse")
+        }else if currentGear == 0 && reverse == false {
+            print("You're in neutral")
+        }else{
+            print("You're car spontaneously combusted")
+        }
+    }
+    func carConfiguration() {
+        print("You're driving a \(Self.Manufacturer) \(Self.Make) \(Model) conifugred with a \(Gears) gear gearbox, \(Doors) doors and \(Seats) seats")
+}
+}
+
+var Lancer1 = mitsubishiLancer()
+Lancer1.upShift(gears: 3)
+Lancer1.downShift(gears: 2)
+Lancer1.downShift(gears: 3)
+Lancer1.printGear()
+Lancer1.upShift(gears: 3)
+Lancer1.printGear()
+Lancer1.carConfiguration()
