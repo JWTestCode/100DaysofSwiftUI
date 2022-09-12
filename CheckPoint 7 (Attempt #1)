@@ -1,0 +1,110 @@
+import Cocoa
+
+//Now that you understand how classes work, and, just as importantly, how they are different from structs, it’s time to tackle a small challenge to check your progress.
+
+//Your challenge is this: make a class hierarchy for animals, starting with Animal at the top, then Dog and Cat as subclasses, then Corgi and Poodle as subclasses of Dog, and Persian and Lion as subclasses of Cat.
+
+//But there’s more:
+
+//The Animal class should have a legs integer property that tracks how many legs the animal has.
+//The Dog class should have a speak() method that prints a generic dog barking string, but each of the subclasses should print something slightly different.
+//The Cat class should have a matching speak() method, again with each subclass printing something different.
+//The Cat class should have an isTame Boolean property, provided using an initializer.
+
+
+//my own notes: every animal has four legs and can speak... so these should be universal... but speak is different for each animal...
+
+//MY CODE STARTS HERE
+class animal {
+    let legs = 4
+    var species: String
+    var sound = ""
+    func speak(){
+        print("\(sound)")
+    }
+    init(species: String, sound: String){
+        self.species = species
+        self.sound = sound
+    }
+}
+
+class Dog: animal {
+    var type: String
+    init(type: String){
+        self.type = type
+        super.init(species: "Dog", sound: "woof!")
+}
+}
+
+class smallDog: Dog {
+    var breed: String
+    init(breed: String){
+        self.breed = breed
+        super.init(type: "smallDog")
+    }
+    override func speak(){
+        if breed == "Poodle"{
+            print("Cute high pitched \(sound)")
+        }else if breed == "Corgi"{
+            print("Cute rumbling \(sound)")
+        }else{
+            print("Yippy \(sound)")
+       
+    }
+}
+}
+
+let Smoke = smallDog(breed: "Poodle")
+let Fluffy = smallDog(breed: "Corgi")
+let Snowy = smallDog(breed: "Maltipoo")
+Smoke.speak()
+Fluffy.speak()
+Snowy.speak()
+    
+//Got Dog working with no hints but obviously I "cheated" by not making seperate sub classes for Poodle and Corgi. I just made one subclass "smallDog" and put the modifiers for both inside. Also, my code lacks any input restrictions, although it does have a fallback else statement for any other small dog input (but because there is no check if it is a valid breed it is sitll problematic)
+
+// With cat, you can see I'm struggling, time to get some hints! Hints did not help :( Was all stuff I figured out on my own... Ok lets hack this bitch!
+class Cat: animal {
+    var genus: String
+    var isTame: Bool
+    init(genus: String, isTame: Bool){
+        self.genus = genus
+        self.isTame = isTame
+        super.init(species: "Cat", sound: "Meow!")
+}
+}
+
+class Feline: Cat {
+    var type: String
+    init (type: String){
+        self.type = type
+        if self.type == "Lion"{
+            super.init(genus: "Feline", isTame: false)
+        }else if self.type == "Persian"{
+            super.init(genus: "Feline", isTame: true)
+        }else{
+            super.init(genus: "Feline", isTame: true)
+        }
+        }
+    override func speak(){
+        if type == "Lion"{
+            print("Roar!")
+            print(self.isTame)
+        }else if type == "Persian"{
+            print("Sultry \(sound)")
+            print(self.isTame)
+        }else{
+            print("\(sound)?")
+            print(self.isTame)
+            print("But am I really tame???")
+        }
+    }
+}
+let Lioness = Feline(type: "Lion")
+let Fluffball = Feline(type: "Persian")
+let Furballs = Feline(type: "Serval")
+Lioness.speak()
+Fluffball.speak()
+Furballs.speak()
+
+//Ok, so we got Cat to work, however, much like Dog I "cheated" and just wrapped Lion and Persian and "else" into one class called feline with different branches. However! I think I found a valuable clue to solving the puzzle of getting classes to inherit the way i want using self and if self statements on initializers
