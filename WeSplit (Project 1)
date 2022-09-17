@@ -51,7 +51,7 @@ struct ContentView: View {
                 Section {
                     Text(totalPerPerson, format: .currency(code: Locale.current.currencyCode ?? "JPY"))
                 }
-                navigationTitle("WeSplit")
+                .navigationTitle("WeSplit")
                     .toolbar {
                         ToolbarItemGroup(placement: .keyboard) {
                             Spacer()
