@@ -1,0 +1,120 @@
+import SwiftUI
+
+extension Double {
+    func americanCup(input: Double) -> Double {
+        self * 236.588
+    }
+}
+
+struct ContentView: View {
+    @State private var initialValue = 0.0
+    @State private var initialValueMLConversion = 0.0
+    @State private var mValue = 0.0
+    @State private var FinalValue = 0.0
+    //if initialValueType == "American Cups" {
+    //    initialValue * americanCup
+    // }
+    //  }
+    @State private var initialValueType = "American Cups"
+    @State private var targetValueType = "Mililiters"
+    @FocusState private var amountIsFocused: Bool
+    
+    let ValueTypes = ["American Cups","Japanese Cups ","Pints", "Gallons", "Liters", "Mililiters"]
+    let mlConversions = [236.588, 200.00, 473.176, 3785.41, 1000, 1]
+    //ml values
+    //let americanCup = 236.588
+    //let japaneseCup = 200.00
+    //let Pints = 473.176
+    //let Gallons = 3785.41
+   //let Liters = 1000
+    
+    
+    func mlConvert(Input : String, Value : Double, Output: String ) -> Double {
+        let americanCup = 236.588
+        let japaneseCup = 200.00
+        let Pints = 473.176
+        let Gallons = 3785.41
+        let Liters = 1000
+        let Mililiters = 1
+        var mlValue: Double
+        if Input == "Mililiters" {
+            mlValue = Value
+        }else if Input == "American Cups" {
+            mlValue = Value * americanCup
+        }else if Input == "Japanese Cups" {
+            mlValue = Value * japaneseCup
+        }
+        if Output == "Mililiters" {
+            return mlValue
+        }else if Output == "American Cups" {
+            return mlValue * americanCup
+        }else if Output == "Japanese Cups" {
+            return mlValue * japaneseCup
+        }
+    }
+    //var mlValue: Double {
+    //get {
+    //if initialValueType == "American Cups" {
+    //  initialValue * americanCup
+    // }
+    //}
+    //if target = "American Cups" {
+    //  initialValueType
+    // }
+    //}
+    
+    var body: some View {
+        NavigationView{
+            Form{
+                Section{
+                    TextField("Amount", value: $initialValue, format: .number)
+                        .keyboardType(.decimalPad)
+                    Picker("Convert from", selection: $initialValueType) {ForEach(ValueTypes, id: \.self) {
+                        Text($0)
+                        //if initialValue != 0.0 {
+                        //if initialValueType == "American Cups" {
+                        //   $mValue = initialValue * mlConversions[0]
+                        //  }else if initialValueType == "Japanese Cups" {
+                        //     $mValue = initialValue * mlConversions[1]
+                        //   }else if initialValueType == "Pints" {
+                        //     $mValue = initialValue * mlConversions[2]
+                        // }else if initialValueType == "Gallons" {
+                        //  $mValue = initialValue * mlConversions[3]
+                        //}else if initialValueType == "Liters" {
+                        //    $mValue = initialValue * mlConversions[4]
+                        //     }else if initialValueType == "Mililiters" {
+                        //   $mValue = initialValue
+                    }
+                    }
+                }
+            }
+            Picker("Convert to", selection: $targetValueType) {ForEach(ValueTypes, id: \.self) {
+                Text($0)
+                //Text("\(americanCup(input: initialValue)")
+                // if initialValue!= 0.0 {
+                //    if targetValueType == "American Cups" {
+                //        $FinalValue = mValue * mlConversions[0]
+                //   }else if targetValueType == "Japanese Cups" {
+                //      $FinalValue = mValue * mlConversions[1]
+                // }else if targetValueType == "Pints" {
+                //     $FinalValue = mValue * mlConversions[2]
+                //}else if targetValueType == "Gallons" {
+                //    $FinalValue = mValue * mlConversions[3]
+                //}else if targetValueType == "Liters" {
+                //     $FinalValue = mValue * mlConversions[4]
+                //}else if targetValueType == "Mililiters" {
+                //   $FinalValue = mValue
+                // }
+            }
+            }
+        }
+        //Section{
+        //Text("\(FinalValue) \(targetValueType)"))
+        //}
+    }
+    struct ContentView_Previews: PreviewProvider {
+        static var previews: some View {
+            ContentView()
+        }
+    }
+}
