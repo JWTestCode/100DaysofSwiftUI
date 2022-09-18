@@ -1,0 +1,30 @@
+import SwiftUI
+
+protocol unitOfVolumeCalc {
+    var number: Double { get }
+    var UnitName: String { get }
+    
+}
+struct test: unitOfVolumeCalc {
+    var number: Double
+    var UnitName: String
+    var onemlValue: Double {
+        if UnitName == "American Cup" {
+            return 236.588
+        }else if UnitName == "Japanese Cup" {
+            return 200.00
+        }
+        
+    }
+}
+protocol unitOfVolume {
+    var number: Double { get }
+    var onemlValue: Double { get }
+}
+struct americanCup : unitOfVolume {
+    var number: Double
+    var onemlValue = 236.588
+    var totalml: Double {
+        number * onemlValue
+    }
+}
