@@ -1,0 +1,150 @@
+//
+//  ContentView.swift
+//  VolumeConversion
+//
+//  Created by Jonathan Webb on 9/19/22.
+//
+//  Big thanks to https://codemaverick.dev/development/100-days-of-swiftui-day-19/ 
+//  for providing their solution from which I was FINALLY able to find a working solution for what I wanted to do
+
+import SwiftUI
+
+struct ContentView: View {
+    @State private var volumeInput = 1.0
+    
+    let volumeUnitInput = ["American Cups", "Japanese Cups","Pints", "Gallons", "Liters", "Milliliters"]
+    @State private var mlValue = 0.0
+    @State private var selectedInput = "American Cups" {
+        didSet {
+            if selectedInput == "American Cups" {
+                mlValue = volumeInput * 236.588
+            }else if selectedInput == "Japanese Cups" {
+                mlValue = volumeInput * 200
+            }else if selectedInput == "Pints" {
+                mlValue = volumeInput * 473.176
+            }else if selectedInput == "Gallons" {
+                mlValue = volumeInput * 3785.41
+            }else if selectedInput == "Liters" {
+                mlValue = volumeInput * 1000
+            }else {
+                mlValue = volumeInput
+            }
+        }
+    }
+    
+    let VolumeUnitOutput = ["American Cups", "Japanese Cups","Pints", "Gallons", "Liters", "Milliliters"]
+    @State private var selectedOutput = "Milliliters"
+    @FocusState private var inputIsFocused: Bool
+    // let mlConversions = [236.588, 200.00, 473.176, 3785.41, 1000, 1]
+    func mlConverter(input: Double) -> Double {
+        var output: Double
+        if selectedInput == "American Cups" {
+            output = input * 236.588
+            return output
+        }else if selectedInput == "Japanese Cups" {
+            output = input * 200
+            return output
+        }else if selectedInput == "Pints" {
+            output = input * 473.176
+            return output
+        }else if selectedInput == "Gallons" {
+            output = input * 3785.41
+            return output
+        }else if selectedInput == "Liters" {
+            output = input * 1000
+            return output
+        }else {
+            return volumeInput
+        }
+    }
+    func mlConverter2()  {
+        if selectedInput == "American Cups" {
+            mlValue = volumeInput * 236.588
+        }else if selectedInput == "Japanese Cups" {
+            mlValue = volumeInput * 200
+        }else if selectedInput == "Pints" {
+            mlValue = volumeInput * 473.176
+        }else if selectedInput == "Gallons" {
+            mlValue = volumeInput * 3785.41
+        }else if selectedInput == "Liters" {
+            mlValue = volumeInput * 1000
+        }else {
+            mlValue = volumeInput
+        }
+    }
+
+        func volumeConverter() -> Double {
+            var output: Double
+            if selectedOutput == "American Cups" {
+                output = mlValue / 236.588
+                return output
+            }else if selectedOutput == "Japanese Cups" {
+                output = mlValue / 200
+                return output
+            }else if selectedOutput == "Pints" {
+                output = mlValue / 473.176
+                return output
+            }else if selectedOutput == "Gallons" {
+                output = mlValue / 3785.41
+                return output
+            }else if selectedOutput == "Liters" {
+                output = mlValue / 1000
+                return output
+            }else if selectedOutput == "Milliliters" {
+                output = mlValue
+                return output
+            }else {
+                return volumeInput
+            }
+        }
+        
+        var body: some View {
+            NavigationView {
+                Form {
+                    Section {
+                        Picker("Unit of volume", selection: $selectedInput) {
+                            ForEach(volumeUnitInput, id: \.self) { //name in
+                                Text($0)
+                            }
+                        }
+                        //'.onReceive(self.name.publisher.first()) { value in
+                        //    self.mlConverter()
+                    }header: {
+                        Text("Starting Unit")
+                    }
+                    Section {
+                        TextField("Enter the volume of liquid", value: $volumeInput, format: .number)
+                            .keyboardType(.decimalPad)
+                            .focused($inputIsFocused)
+                        //Text(mlConverter(), format: .number)
+                    }header: {
+                        Text("Enter the volume you wish to convert")
+                    }
+                    Section {
+                        Picker("Unit of Conversion", selection: $selectedOutput) {
+                            ForEach(VolumeUnitOutput, id:\.self) {
+                                Text($0)
+                            }
+                        }
+                    }header: {
+                        Text("Choose the unit to convert to")
+                    }
+                    Section{
+                        Button("Start Conversion", action: mlConverter2)
+                        //Text("\(mlValue)")
+                    }
+                    Section{
+                        Text(volumeConverter(), format: .number)
+                    }header: {
+                        Text("Volume in \(selectedOutput)")
+                    }
+                }
+            }
+        }
+    }
+    
+    struct ContentView_Previews: PreviewProvider {
+        static var previews: some View {
+            ContentView()
+        }
+    }
