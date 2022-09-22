@@ -1,0 +1,120 @@
+//
+//  ContentView.swift
+//  GuessTheFlag (Project2)
+//
+//  Created by Jonathan Webb on 9/20/22.
+//
+
+import SwiftUI
+
+struct ContentView: View {
+    @State private var showingScore = false
+    @State private var scoreTitle = ""
+    @State private var scoreRight = 0
+    @State private var scoreWrong = 0
+    @State private var countries = ["Estonia", "France", "Germany", "Ireland", "Italy", "Nigeria", "Poland", "Russia", "Spain", "UK", "US"].shuffled()
+    @State private var correctAnswer = Int.random(in: 0...2)
+    @State private var roundsRemaining = 8
+    var body: some View {
+        ZStack {
+            //LinearGradient(gradient: Gradient(colors: [.blue, .black]), startPoint: .top, endPoint: .bottom)
+            RadialGradient(stops: [
+                .init(color: Color(red: 0.1, green: 0.2, blue: 0.45), location: 0.3),
+                .init (color: Color(red: 0.76, green: 0.26, blue: 0.3), location: 0.3)], center: .top, startRadius: 200, endRadius: 700)
+                .ignoresSafeArea()
+            
+            VStack{
+                Spacer()
+                
+                Text("Guess The Flag")
+                    .font((.largeTitle.bold()))
+                    .foregroundColor(.white)
+                Spacer()
+                Spacer()
+                VStack(spacing: 15){
+                    
+                    VStack {
+                        Text("Tap the flag of")
+                            .foregroundStyle(.secondary)
+                            .font(.subheadline.weight((.heavy)))
+                        Text(countries[correctAnswer])
+                            .font(.largeTitle.weight(.semibold))
+                    }
+                    ForEach(0..<3) {number in
+                        Button{
+                            flagTapped(number)
+                        }label: {
+                            Image(countries[number])
+                                .renderingMode(.original)
+                                .clipShape(Capsule())
+                                .shadow(radius: 10)
+                        }
+                    }
+                }
+                .frame(maxWidth: .infinity)
+                .padding(.vertical, 20)
+                .background(.thinMaterial)
+                .clipShape(RoundedRectangle(cornerRadius: 35))
+                Spacer()
+                Spacer()
+                Text("Score: Right: \(scoreRight)")
+                    .foregroundColor(.white)
+                    .font(.title.bold())
+                Text("Score: Wrong: \(scoreWrong)")
+                    .foregroundColor(.white)
+                    .font(.title.bold())
+                Text("Rounds remaining: \(roundsRemaining)")
+                    .foregroundColor(.white)
+                    .font(.title.bold())
+            }
+        }
+        .alert(scoreTitle, isPresented: $showingScore) {
+            if roundsRemaining > 0 {
+                Button("Continue", action: askQuestion)
+            }else {
+                Button("Start Over", action: gameOver)
+            }
+        } message: {
+            if roundsRemaining > 0 {
+                Text("Your score is \(scoreRight) right, \(scoreWrong) wrong with \(roundsRemaining) rounds remaining")
+            }else {
+                Text("Your final score was \(scoreRight) right & \(scoreWrong) wrong")
+            }
+        }
+        }
+    func flagTapped (_ number: Int) {
+        if number == correctAnswer {
+            scoreTitle = "Correct"
+            scoreRight += 1
+            roundsRemaining -= 1
+        }else if number != correctAnswer {
+            if countries[number].hasPrefix("U") {
+                scoreTitle = "Incorrect, that's the \(countries[number])'s flag!"
+                scoreWrong += 1
+            roundsRemaining -= 1
+            }else {
+                scoreTitle = "Incorrect, that's \(countries[number])'s flag!"
+                scoreWrong += 1
+                roundsRemaining -= 1
+            }
+        }
+        showingScore = true
+    }
+    func askQuestion() {
+        countries.shuffle()
+        correctAnswer = Int.random(in: 0...2)
+    }
+    func gameOver() {
+        scoreRight = 0
+        scoreWrong = 0
+        roundsRemaining = 8
+        countries.shuffle()
+        correctAnswer = Int.random(in: 0...2)
+    }
+}
+    
+struct ContentView_Previews: PreviewProvider {
+    static var previews: some View {
+        ContentView()
+    }
+}
