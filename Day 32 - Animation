@@ -1,0 +1,46 @@
+//
+//  ContentView.swift
+//  Animation3
+//
+//  Created by Jonathan Webb on 10/2/22.
+//
+
+import SwiftUI
+
+struct ContentView: View {
+    @State private var animationAmount = 1.0
+    @State private var animationAmount2 = 0.0
+    
+    var body: some View {
+        Button("Tap Me") {
+            withAnimation(.interpolatingSpring(stiffness: 5, damping: 1)) {
+                animationAmount2 += 360
+            }
+        }
+        .padding(50)
+        .background(.red)
+        .foregroundColor(.white)
+        .clipShape(Circle())
+        .rotation3DEffect(.degrees(animationAmount2), axis: (x: 0.8, y: 1, z: 0.3))
+        .overlay(
+            Circle()
+                .stroke(.red)
+                .scaleEffect(animationAmount)
+                .opacity(2 - animationAmount)
+                .animation(.easeInOut(duration: 1)
+                    .repeatForever(autoreverses: false),
+                           value: animationAmount)
+        )
+        .onAppear{
+            animationAmount = 2
+            
+        }
+    }
+}
+
+
+struct ContentView_Previews: PreviewProvider {
+    static var previews: some View {
+        ContentView()
+    }
+}
